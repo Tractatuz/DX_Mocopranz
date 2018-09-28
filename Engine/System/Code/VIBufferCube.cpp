@@ -1,10 +1,17 @@
 #include "stdafx.h"
 #include "VIBufferCube.h"
 
-#include "GraphicDevice.h"
-
 BEGIN(Engine)
 
+
+VIBufferCube * VIBufferCube::Create()
+{
+	VIBufferCube* pComponent = new VIBufferCube();
+	if (FAILED(pComponent->Init()))
+		::Safe_Delete(pComponent);
+
+	return pComponent;
+}
 
 VIBufferCube::VIBufferCube()
 {
@@ -13,7 +20,7 @@ VIBufferCube::VIBufferCube()
 
 VIBufferCube::~VIBufferCube()
 {
-	Release();
+	
 }
 
 HRESULT VIBufferCube::Init()
@@ -32,7 +39,7 @@ HRESULT VIBufferCube::Init()
 	Init_Vtx();
 	Init_Idx();
 
-	CreateRasterizerState();
+	VIBuffer::CreateRasterizerState();
 
 
 	return S_OK;
@@ -87,8 +94,8 @@ void VIBufferCube::Init_Idx()
 {
 	Index16 pIdx[] =
 	{
-		// Front
-		{ Index16(0, 1, 2) },
+	// Front
+	{ Index16(0, 1, 2) },
 	{ Index16(0, 2, 3) },
 
 	// Right
@@ -127,24 +134,9 @@ void VIBufferCube::Init_Idx()
 		GraphicDevice::GetInstance()->GetDevice()->CreateBuffer(&tBufferDesc, &tData, &m_pIdxBuffer), );
 }
 
-void VIBufferCube::CreateRasterizerState()
-{
-	D3D11_RASTERIZER_DESC tRasterizerDesc;
-	ZeroMemory(&tRasterizerDesc, sizeof(D3D11_RASTERIZER_DESC));
-	tRasterizerDesc.CullMode = D3D11_CULL_NONE;
-	tRasterizerDesc.FillMode = D3D11_FILL_WIREFRAME;
-	GraphicDevice::GetInstance()->GetDevice()->CreateRasterizerState(&tRasterizerDesc, &m_pRasterizerState);
-}
-
 void VIBufferCube::Update()
 {
 
-}
-
-void VIBufferCube::Render()
-{
-	m_pShader->Render();
-	VIBuffer::Render();
 }
 
 

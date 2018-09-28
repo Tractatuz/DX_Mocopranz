@@ -5,10 +5,18 @@
 #include "ResourceMgr.h"
 #include "ObjectMgr.h"
 #include "Export_Function_Mgr.h"
+
 #include "VIBufferCube.h"
-#include "../Object/TestObject.h"
-#include "CameraDynamic.h"
 #include "ShaderColor.h"
+
+#include "VIBufferTerrain.h"
+#include "ShaderTerrain.h"
+
+#include "Texture.h"
+
+#include "Object.h"
+
+#include "../Mgr/ObjectFactory.h"
 
 SceneTown::SceneTown()
 {
@@ -24,32 +32,85 @@ HRESULT SceneTown::Init()
 
 
 	// for Test (수정)
-	Engine::ShaderColor* pShader = new Engine::ShaderColor();
-	pShader->Init(); // (수정) (이놈의 Init을 생성자에 넣어버릴까??)
+	Engine::ShaderColor* pShader = Engine::ShaderColor::Create();
 	Engine::GetResourceMgr()->AddResource(
 		Engine::ResourceMgr::RESOURCE_ATTRI_STATIC
 		, Engine::ResourceMgr::RESOURCE_TYPE_SHADER
 		, L"Test_Shader_Color"
 		, pShader);
 
-	Engine::VIBufferCube* pVIBufferCube = new Engine::VIBufferCube();
-	pVIBufferCube->Init(); // (수정) (이놈의 Init을 생성자에 넣어버릴까??)
+	Engine::ShaderTerrain* pShaderTerrain = Engine::ShaderTerrain::Create();
 	Engine::GetResourceMgr()->AddResource(
 		Engine::ResourceMgr::RESOURCE_ATTRI_STATIC
-		, Engine::ResourceMgr::RESOURCE_TYPE_MODEL
+		, Engine::ResourceMgr::RESOURCE_TYPE_SHADER
+		, L"Test_Shader_Terrain"
+		, pShaderTerrain);
+
+	Engine::VIBufferCube* pVIBufferCube = Engine::VIBufferCube::Create();
+	Engine::GetResourceMgr()->AddResource(
+		Engine::ResourceMgr::RESOURCE_ATTRI_STATIC
+		, Engine::ResourceMgr::RESOURCE_TYPE_BUFFER
 		, L"Test_Buffer_Cube"
 		, pVIBufferCube);
+
+	Engine::Texture* pTerrainTexture = Engine::Texture::Create(
+		L".\\bin\\Resource\\Map\\lightdirt.dds"
+		, Engine::Texture::TEXTURE_TYPE_BASIC);
+	Engine::GetResourceMgr()->AddResource(
+		Engine::ResourceMgr::RESOURCE_ATTRI_STATIC
+		, Engine::ResourceMgr::RESOURCE_TYPE_TEXTURE
+		, L"Test_Texture_Terrain"
+		, pTerrainTexture);
+
+	Engine::VIBufferTerrain* pTerrain = Engine::VIBufferTerrain::Create(128, 128
+		, ".\\bin\\Resource\\Map\\mountains.bmp");
+	Engine::GetResourceMgr()->AddResource(
+		Engine::ResourceMgr::RESOURCE_ATTRI_STATIC
+		, Engine::ResourceMgr::RESOURCE_TYPE_BUFFER
+		, L"Test_Buffer_Terrain"
+		, pTerrain);
 	
 
 	// TestObject
-	TestObject* pTestObject = new TestObject();
-	pTestObject->Init();
-	Engine::GetObjectMgr()->AddObj(Engine::Scene::ELayerType::LAYER_TYPE_GAMELOGIC, pTestObject);
+	Engine::Object* pCreatedObj
+		= ObjectFactory::GetInstance()->CreateObject(ObjectFactory::EObjectID::OBJECT_ID_TEST);
+	pCreatedObj->SetWorldMatrix(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	Engine::GetObjectMgr()->AddObj(
+		Engine::Scene::ELayerType::LAYER_TYPE_GAMELOGIC
+		, pCreatedObj);
+
+	pCreatedObj
+		= ObjectFactory::GetInstance()->CreateObject(ObjectFactory::EObjectID::OBJECT_ID_TEST);
+	pCreatedObj->SetWorldMatrix(D3DXVECTOR3(10.0f, 0.0f, 0.0f));
+	Engine::GetObjectMgr()->AddObj(
+		Engine::Scene::ELayerType::LAYER_TYPE_GAMELOGIC
+		, pCreatedObj);
+
+	pCreatedObj
+		= ObjectFactory::GetInstance()->CreateObject(ObjectFactory::EObjectID::OBJECT_ID_TEST);
+	pCreatedObj->SetWorldMatrix(D3DXVECTOR3(0.0f, 0.0f, 10.0f));
+	Engine::GetObjectMgr()->AddObj(
+		Engine::Scene::ELayerType::LAYER_TYPE_GAMELOGIC
+		, pCreatedObj);
+
+	pCreatedObj
+		= ObjectFactory::GetInstance()->CreateObject(ObjectFactory::EObjectID::OBJECT_ID_TEST);
+	pCreatedObj->SetWorldMatrix(D3DXVECTOR3(0.0f, 10.0f, 0.0f));
+	Engine::GetObjectMgr()->AddObj(
+		Engine::Scene::ELayerType::LAYER_TYPE_GAMELOGIC
+		, pCreatedObj);
+
+	// Terrain
+	pCreatedObj
+		= ObjectFactory::GetInstance()->CreateObject(ObjectFactory::EObjectID::OBJECT_ID_TERRAIN);
+	Engine::GetObjectMgr()->AddObj(
+		Engine::Scene::ELayerType::LAYER_TYPE_BACK
+		, pCreatedObj);
 
 	// Camera
-	Engine::CameraDynamic* pCamera = new Engine::CameraDynamic();
-	pCamera->Init();
-	Engine::GetObjectMgr()->AddObj(Engine::Scene::ELayerType::LAYER_TYPE_GAMELOGIC, pCamera);
+	Engine::GetObjectMgr()->AddObj(
+		Engine::Scene::ELayerType::LAYER_TYPE_GAMELOGIC
+		, ObjectFactory::GetInstance()->CreateObject(ObjectFactory::EObjectID::OBJECT_ID_CAMERA_DYNAMIC));
 	
 
 	return S_OK;

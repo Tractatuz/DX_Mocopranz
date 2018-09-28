@@ -25,9 +25,11 @@ public:
 
 public:
 	const Component*	GetComponent(const std::wstring& _wstrComponentKey);
-	EState				GetObjState() { return m_eObjState; }
+	template<typename T> const Component*	GetComponent();
+
+	GET(Engine::Object::EState, ObjState, m_eObjState);
 protected:
-	void				SetObjState(const EState _eState) { m_eObjState = _eState; }
+	SET(Engine::Object::EState, ObjState, m_eObjState);
 
 public :
 	inline void SetWorldMatrix
@@ -37,10 +39,11 @@ public :
 		, const D3DXVECTOR3& _vScale = D3DXVECTOR3(1.0f, 1.0f, 1.0f)
 	);
 
-protected:
+public :
 	virtual HRESULT			Init()			PURE;
-	virtual Object::EState	Update()		PURE;
-	virtual void			Render()		PURE;
+protected:
+	virtual Object::EState	Update();
+	virtual void			Render();
 	virtual void			Release()		PURE;
 
 

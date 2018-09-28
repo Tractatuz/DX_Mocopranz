@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "VIBuffer.h"
 
-#include "GraphicDevice.h"
 
 BEGIN(Engine)
 
@@ -40,7 +39,7 @@ VIBuffer::VIBuffer()
 
 VIBuffer::~VIBuffer()
 {
-	
+	Release();
 }
 
 void VIBuffer::SetShader
@@ -69,6 +68,9 @@ void VIBuffer::Render()
 	if (nullptr == m_pVtxBuffer)
 		return;
 
+	if (m_pShader)
+		m_pShader->Render();
+
 	ID3D11DeviceContext* pDeviceContext = GraphicDevice::GetInstance()->GetDeviceContext();
 	pDeviceContext->IASetVertexBuffers(0, 1, &m_pVtxBuffer, &m_nVtxStride, &m_nVtxOffset);
 	pDeviceContext->IASetIndexBuffer(m_pIdxBuffer, DXGI_FORMAT_R16_UINT, 0);
@@ -78,7 +80,6 @@ void VIBuffer::Render()
 		pDeviceContext->RSSetState(m_pRasterizerState);
 
 	pDeviceContext->DrawIndexed(m_nIdxNum, m_nIdxStart, m_nIdxPlus);
-	pDeviceContext->Draw(m_nVtxNum, m_nVtxStart);
 }
 
 void VIBuffer::CreateRasterizerState()
@@ -92,8 +93,6 @@ void VIBuffer::CreateRasterizerState()
 
 void VIBuffer::Release()
 {
-	Resource::Release();
-
 	if (m_pRefCnt == nullptr)
 	{
 		::Safe_Release(m_pVtxBuffer);

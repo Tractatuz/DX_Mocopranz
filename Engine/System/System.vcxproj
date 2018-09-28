@@ -23,7 +23,8 @@
     <ProjectGuid>{E102A399-E4DE-4056-B1C4-9743AE5DC75C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>System</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <ProjectName>System</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -48,7 +49,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -178,24 +179,31 @@
     <ClInclude Include="Code\Component.h" />
     <ClInclude Include="Code\Export_Function_Mgr.h" />
     <ClInclude Include="Code\Export_Function_Mgr_GraphicDevice.h" />
+    <ClInclude Include="Code\Frustum.h" />
     <ClInclude Include="Code\GraphicDevice.h" />
     <ClInclude Include="Code\KeyChecker.h" />
     <ClInclude Include="Code\Layer.h" />
     <ClInclude Include="Code\Object.h" />
     <ClInclude Include="Code\ObjectMgr.h" />
+    <ClInclude Include="Code\QuadTree.h" />
     <ClInclude Include="Code\Renderer.h" />
     <ClInclude Include="Code\Resource.h" />
     <ClInclude Include="Code\ResourceMgr.h" />
     <ClInclude Include="Code\Scene.h" />
+    <ClInclude Include="Code\SceneLoading.h" />
     <ClInclude Include="Code\SceneMgr.h" />
     <ClInclude Include="Code\SceneNull.h" />
     <ClInclude Include="Code\Shader.h" />
     <ClInclude Include="Code\ShaderColor.h" />
+    <ClInclude Include="Code\ShaderTerrain.h" />
     <ClInclude Include="Code\Texture.h" />
     <ClInclude Include="Code\Timer.h" />
     <ClInclude Include="Code\Transform.h" />
     <ClInclude Include="Code\VIBuffer.h" />
     <ClInclude Include="Code\VIBufferCube.h" />
+    <ClInclude Include="Code\VIBufferTerrain.h" />
+    <ClInclude Include="Core\TSingleTon.h" />
+    <ClInclude Include="DataStream.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -204,23 +212,29 @@
     <ClCompile Include="Code\CameraDynamic.cpp" />
     <ClCompile Include="Code\CameraStatic.cpp" />
     <ClCompile Include="Code\Component.cpp" />
+    <ClCompile Include="Code\Frustum.cpp" />
     <ClCompile Include="Code\GraphicDevice.cpp" />
     <ClCompile Include="Code\KeyChecker.cpp" />
     <ClCompile Include="Code\Layer.cpp" />
     <ClCompile Include="Code\Object.cpp" />
     <ClCompile Include="Code\ObjectMgr.cpp" />
+    <ClCompile Include="Code\QuadTree.cpp" />
     <ClCompile Include="Code\Renderer.cpp" />
     <ClCompile Include="Code\Resource.cpp" />
     <ClCompile Include="Code\ResourceMgr.cpp" />
     <ClCompile Include="Code\Scene.cpp" />
+    <ClCompile Include="Code\SceneLoading.cpp" />
     <ClCompile Include="Code\SceneMgr.cpp" />
     <ClCompile Include="Code\Shader.cpp" />
     <ClCompile Include="Code\ShaderColor.cpp" />
+    <ClCompile Include="Code\ShaderTerrain.cpp" />
     <ClCompile Include="Code\Texture.cpp" />
     <ClCompile Include="Code\Timer.cpp" />
     <ClCompile Include="Code\Transform.cpp" />
     <ClCompile Include="Code\VIBuffer.cpp" />
     <ClCompile Include="Code\VIBufferCube.cpp" />
+    <ClCompile Include="Code\VIBufferTerrain.cpp" />
+    <ClCompile Include="DataStream.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

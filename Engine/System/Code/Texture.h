@@ -10,7 +10,14 @@ class ENGINE_DLL Texture : public Resource
 public :
 	enum ETextureType { TEXTURE_TYPE_BASIC, TEXTURE_TYPE_DDS };
 
-protected:
+public :
+	static Texture* Create
+	(
+		std::wstring _wtrPath
+		, const ETextureType& _eTextureType
+	);
+	CLONE(Texture);
+private:
 	Texture();
 public:
 	virtual ~Texture();

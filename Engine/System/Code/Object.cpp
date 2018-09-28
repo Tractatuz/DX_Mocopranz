@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Object.h"
 
+#include <typeinfo>
+
 #include "Component.h"
 #include "Transform.h"
 
@@ -40,10 +42,21 @@ const Component* Object::GetComponent(const std::wstring& _wstrComponentKey)
 	return iter->second;
 }
 
+template<typename T>
+const Component* Object::GetComponent()
+{
+	for each (auto iter in m_mapComponent)
+	{
+		//if (typeid(iter->second).Get() == typeid(T).Get())
+		if (typeid(iter->second) == typeid(T))
+			return iter->second;
+	}
+}
+
 void Object::AddDefaultComponent()
 {
 	// Transform ------------
-	m_pTransform = new Transform();
+	m_pTransform = Transform::Create();
 	m_mapComponent.insert(
 		std::make_pair(L"Transform", m_pTransform));
 }
@@ -77,6 +90,17 @@ HRESULT Object::Init()
 	m_eObjState = EState::STATE_ALIVE;
 
 	return S_OK;
+}
+
+Object::EState Object::Update()
+{
+	Engine::Object::Update_Component();
+	return m_eObjState;
+}
+
+void Object::Render()
+{
+	Engine::Object::Render_Component();
 }
 
 
